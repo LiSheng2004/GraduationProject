@@ -46,7 +46,7 @@ def getCurrentTime():
 
     # 将时间转换为字符串格式 yyyy-mm-dd:hh-mm-ss
     # formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time) + f".{milliseconds:03d}"
-    formatted_time = time.strftime("%H:%M:%S", local_time) + f".{milliseconds:03d}"
+    formatted_time = time.strftime("%H:%M:%S", local_time).zfill(6) + f".{milliseconds:03d}"
     return formatted_time
 
 if __name__ == "__main__":
