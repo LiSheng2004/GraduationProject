@@ -4,14 +4,10 @@ from datetime import datetime
 import os
 
 # 创建Logger
-def setup_logger():
+def setup_logger(path):
     # 获取今天的日期并格式化为字符串
     today_date = datetime.now().strftime('%Y%m%d-%H%M%S')
-    log_filename = f'./logs/log{today_date}.txt'
-    # 创建日志文件夹
-    if not os.path.exists('logs'):
-        os.makedirs('logs')
-
+    log_filename = f'{path}/log{today_date}.txt'
     # 创建日志器
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)  # 设置日志级别

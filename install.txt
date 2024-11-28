@@ -13,3 +13,9 @@ pip install pywin32
 pip install pytz
 # 接着pywin32要手动安装
 python C:\Users\tj07166\.conda\envs\stock\Scripts\pywin32_postinstall.py -install
+
+# 使用git管理项目
+1. 首先创建远程仓库，在本地进行git init创建本地仓库
+2. 编写gitignore，进行add和commit后推到远程分支
+3. 在远程主机上安装git，生成ssh公钥填写到github仓库中
+4. git clone
