@@ -2,12 +2,12 @@ import time
 import logging
 from datetime import datetime
 import os
+from constant import ROOT_PATH
 
 # 创建Logger
 def setup_logger(path):
-    # 获取今天的日期并格式化为字符串
-    today_date = datetime.now().strftime('%Y%m%d-%H%M%S')
-    log_filename = f'{path}/log{today_date}.txt'
+    # 传入的path就是log_filename
+    log_filename = path
     # 创建日志器
     logger = logging.getLogger()
     logger.setLevel(logging.DEBUG)  # 设置日志级别
@@ -42,8 +42,9 @@ def getCurrentTime():
 
     # 将时间转换为字符串格式 yyyy-mm-dd:hh-mm-ss
     # formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time) + f".{milliseconds:03d}"
-    formatted_time = time.strftime("%H:%M:%S", local_time).zfill(6) + f".{milliseconds:03d}"
+    formatted_time = time.strftime("%H%M-%S", local_time).zfill(6) + f".{milliseconds:03d}"
     return formatted_time
 
 if __name__ == "__main__":
-    print(getCurrentTime())
+    # print(getCurrentTime())
+    setup_logger(f'{ROOT_PATH}/1.txt')
