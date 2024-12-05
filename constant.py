@@ -2,7 +2,8 @@ import win32con
 import ctypes
 
 # 根文件夹路劲
-ROOT_PATH = r"\\10.68.1.151\tj07166_001\Etornado-data"
+# ROOT_PATH = r"\\10.68.1.151\tj07166_001\Etornado-data"
+ROOT_PATH = './data'
 
 RCV_REPORT = 0x3f001234  # 1056969268
 RCV_FILEDATA = 0x3f001235  # 1056969269
