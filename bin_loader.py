@@ -1,4 +1,5 @@
 import pickle
+import gzip
 
 def load_from_binary_file(input_file):
     """
@@ -19,6 +20,7 @@ def load_from_binary_file(input_file):
 
 if __name__ == "__main__":
     # 使用示例
-    input_file = 'data\\20241205_203141\\20241205\\20\\raw\\31补报告数据2031-47.266.bin'  # 替换为你的文件路径
-    data_list = load_from_binary_file(input_file)
-    print(len(data_list))  # 打印加载的数据
+    # 加载压缩的二进制文件
+    with gzip.open(r'data\20241205_221410\20241205\22\raw\26补报告数据2214-19.533.pkl.gz', 'rb') as f:
+        loaded_data = pickle.load(f)
+    print(loaded_data)

@@ -66,34 +66,34 @@ class RCV_FILE_HEADEx(ctypes.Structure):
 import time
 
 # 定义 RCV_REPORT_STRUCTExV3 结构体
-class RCV_REPORT_STRUCTExV3(ctypes.Structure):
+class RCV_REPORT_STRUCTExV3(ctypes.Structure): # 158
     # 设置内存对齐
     _pack_ = 1
     _fields_ = [
-        ("m_cbSize", ctypes.c_uint16),                # 结构大小 (WORD)
-        ("m_time", ctypes.c_long),                    # 成交时间 (time_t)
-        ("m_wMarket", ctypes.c_uint16),               # 股票市场类型 (WORD)
-        ("m_szLabel", ctypes.c_char * STKLABEL_LEN), # 股票代码
-        ("m_szName", ctypes.c_char * STKNAME_LEN),   # 股票名称
-        ("m_fLastClose", ctypes.c_float),             # 昨收
-        ("m_fOpen", ctypes.c_float),                  # 今开
-        ("m_fHigh", ctypes.c_float),                  # 最高
-        ("m_fLow", ctypes.c_float),                   # 最低
-        ("m_fNewPrice", ctypes.c_float),              # 最新
-        ("m_fVolume", ctypes.c_float),                # 成交量
-        ("m_fAmount", ctypes.c_float),                # 成交额
-        ("m_fBuyPrice", ctypes.c_float * 3),         # 申买价1,2,3
-        ("m_fBuyVolume", ctypes.c_float * 3),        # 申买量1,2,3
-        ("m_fSellPrice", ctypes.c_float * 3),        # 申卖价1,2,3
-        ("m_fSellVolume", ctypes.c_float * 3),       # 申卖量1,2,3
-        ("m_fBuyPrice4", ctypes.c_float),             # 申买价4
-        ("m_fBuyVolume4", ctypes.c_float),            # 申买量4
-        ("m_fSellPrice4", ctypes.c_float),            # 申卖价4
-        ("m_fSellVolume4", ctypes.c_float),           # 申卖量4
-        ("m_fBuyPrice5", ctypes.c_float),             # 申买价5
-        ("m_fBuyVolume5", ctypes.c_float),            # 申买量5
-        ("m_fSellPrice5", ctypes.c_float),            # 申卖价5
-        ("m_fSellVolume5", ctypes.c_float),           # 申卖量5
+        ("m_cbSize", ctypes.c_uint16),                # 结构大小 (WORD) 2
+        ("m_time", ctypes.c_long),                    # 成交时间 (time_t) 4
+        ("m_wMarket", ctypes.c_uint16),               # 股票市场类型 (WORD) 2
+        ("m_szLabel", ctypes.c_char * STKLABEL_LEN), # 股票代码 10
+        ("m_szName", ctypes.c_char * STKNAME_LEN),   # 股票名称 32 
+        ("m_fLastClose", ctypes.c_float),             # 昨收 4
+        ("m_fOpen", ctypes.c_float),                  # 今开 4
+        ("m_fHigh", ctypes.c_float),                  # 最高 4
+        ("m_fLow", ctypes.c_float),                   # 最低 4
+        ("m_fNewPrice", ctypes.c_float),              # 最新 4 
+        ("m_fVolume", ctypes.c_float),                # 成交量 4
+        ("m_fAmount", ctypes.c_float),                # 成交额 4
+        ("m_fBuyPrice", ctypes.c_float * 3),         # 申买价1,2,3 12 
+        ("m_fBuyVolume", ctypes.c_float * 3),        # 申买量1,2,3 12
+        ("m_fSellPrice", ctypes.c_float * 3),        # 申卖价1,2,3 12
+        ("m_fSellVolume", ctypes.c_float * 3),       # 申卖量1,2,3 12 
+        ("m_fBuyPrice4", ctypes.c_float),             # 申买价4 4  
+        ("m_fBuyVolume4", ctypes.c_float),            # 申买量4 4
+        ("m_fSellPrice4", ctypes.c_float),            # 申卖价4 4
+        ("m_fSellVolume4", ctypes.c_float),           # 申卖量4 4
+        ("m_fBuyPrice5", ctypes.c_float),             # 申买价5 4
+        ("m_fBuyVolume5", ctypes.c_float),            # 申买量5 4
+        ("m_fSellPrice5", ctypes.c_float),            # 申卖价5 4
+        ("m_fSellVolume5", ctypes.c_float),           # 申卖量5 4
     ]
 
 class RCV_EKE_HEADEx(ctypes.Structure):
