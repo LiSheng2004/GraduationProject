@@ -44,6 +44,19 @@ def getCurrentTime():
     # formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time) + f".{milliseconds:03d}"
     formatted_time = time.strftime("%H%M-%S", local_time).zfill(6) + f".{milliseconds:03d}"
     return formatted_time
+# 获取当前的时间，包括毫秒
+def getCurrentTime_withDay():
+    timestamp = time.time()
+    # 获取本地时间
+    local_time = time.localtime(timestamp)
+
+    # 获取小数部分（毫秒）
+    milliseconds = int((timestamp - int(timestamp)) * 1000)
+
+    # 将时间转换为字符串格式 yyyy-mm-dd:hh-mm-ss
+    # formatted_time = time.strftime("%Y-%m-%d %H:%M:%S", local_time) + f".{milliseconds:03d}"
+    formatted_time = time.strftime("%Y%m%d", local_time).zfill(6)
+    return formatted_time
 
 if __name__ == "__main__":
     # print(getCurrentTime())

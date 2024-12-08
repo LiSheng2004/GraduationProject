@@ -8,12 +8,20 @@
 |    └──... # 保存所有接收到的数据
 ├── logs
 |    └──... # 日志文件夹
+├── images
+|    └──... # 存储本文件的图片
 ├── constant.py # 定义结构以及常量文件
+├── convert_func.py # 文件格式转换代码，支持csv2raw和raw2csv
+├── del_data.py # 用于递归删除data文件夹数据文件
 ├── dll_loader.py # 加载dll，定义窗口
+├── extended_api.py # 定义主动向龙卷风发请求函数
+├── generate_func.py # 存储数据生成函数文件，用于将龙卷风发来的数据转换成csv中的数据以及raw数据
+├── install.txt # 安装须知
 ├── main.py # 项目入口
-├── requests.py # 主动向dll请求数据
+├── requests.py # 主动向dll发送请求，需要调用extended_api函数
 ├── run_main.bat # 运行窗口脚本，在windows上以管理员身份运行main.py
 ├── run_test.bat # 运行测试请求数据脚本，在windows上以管理员身份运行requests.py
+├── test.py # 测试文件，用于不同需求的测试
 ├── utils.py # 包含工具函数
 ```
 

@@ -1,9 +1,33 @@
 import win32con
 import ctypes
 
-# 根文件夹路劲
+# 根文件夹路径
 # ROOT_PATH = r"\\10.68.1.151\tj07166_001\Etornado-data"
 ROOT_PATH = './data'
+
+# 各个csv文件表头
+csv_RCV_REPORT = ["结构大小", "成交时间", "股票市场类型", "股票代码", "股票名称", "昨收", "今开", "最高", "最低", "最新", 
+                "成交量", "成交额", "申买价1", "申买价2", "申买价3", "申买量1", "申买量2", "申买量3", 
+                "申卖价1", "申卖价2", "申卖价3", "申卖量1", "申卖量2", "申卖量3", 
+                "申买价4", "申买量4", "申卖价4", "申卖量4", 
+                "申买价5", "申买量5", "申卖价5", "申卖量5"]
+csv_RCV_FENBI = ["股票代码", "市场类型","日期",'昨收','今开','分别数量','具体时间','最高价' ,'最低价','最新价格',"成交量", "成交额", "申买价1", "申买价2", 
+                "申买价3", "申买价4", "申买价5", "申买量1", "申买量2", "申买量3", 
+                "申买量4", "申买量5", "申卖价1", "申卖价2", "申卖价3", "申卖价4", 
+                "申卖价5", "申卖量1", "申卖量2", "申卖量3", "申卖量4", "申卖量5"]
+csv_RCV_POWER_EX = ["股票代码", "市场类型","时间", "每股送", "每股配", "配股价",'每股红利',]
+csv_RCV_MKTTBLDATA = ["市场代码", "市场名称", "市场属性", "数据日期", 
+                    "交易时段个数", "开市时间", "收市时间", "证券个数"]
+csv_TABLE_STRUCT = ['股票代码','股票名称',"每股手数"]
+csv_FINANCEDATA = ["股票市场类型", "保留字段", "股票代码", "财务数据的日期", "总股本", "国家股", "发起人法人股",
+                    "法人股", "B股", "H股", "目前流通", "职工股", "A2转配股", "总资产(千元)", "流动资产",
+                    "固定资产", "无形资产", "长期投资", "流动负债", "长期负债", "资本公积金", "每股公积金",
+                    "股东权益", "主营收入", "主营利润", "其他利润", "营业利润", "投资收益", "补贴收入",
+                    "营业外收支", "上年损益调整", "利润总额", "税后利润", "净利润", "未分配利润", "每股未分配",
+                    "每股收益", "每股净资产", "调整每股净资产", "股东权益比", "净资收益率"]
+csv_MINUTES_EX = ["股票代码", "市场类型","时间", "最新价", "成交量", "成交金额"]
+csv_DAY_EX = ["股票代码", "市场类型","时间", "开盘", "最高", "最低",'收盘','交易量','交易额','涨数','跌数']
+csv_5MIN_EX = ["股票代码", "市场类型","时间", "开盘", "最高", "最低",'收盘','交易量','交易额','主动买量']
 
 RCV_REPORT = 0x3f001234  # 1056969268
 RCV_FILEDATA = 0x3f001235  # 1056969269
@@ -287,4 +311,210 @@ class RCV_FENBI(ctypes.Structure):
         ("m_fOpen", ctypes.c_float),       # 今开
         ("m_nCount", ctypes.c_ushort),     # 数据量，分笔的数量
         ("m_Data", ctypes.POINTER(RCV_FENBI_STRUCTEx)),  # 指向分笔数据的指针
+    ]
+
+# 定义 DAT_FENBI 结构体
+class DAT_FENBI(ctypes.Structure):
+    _pack_ = 1  # 内存紧密对齐
+    _fields_ = [
+        ("m_szLabel", ctypes.c_char * 10),  # 股票代码，最大长度为10
+        ("m_wMarket", ctypes.c_ushort),    # 市场类型
+        ("m_lDate", ctypes.c_long),        # 日期，时间戳格式
+        ("m_fLastClose", ctypes.c_float),  # 昨收
+        ("m_fOpen", ctypes.c_float),       # 今开
+        ("m_nCount", ctypes.c_ushort),     # 分笔数据数量
+        ("formatted_date", ctypes.c_char * 20), # 格式化日期字符串，长度为20
+        ("m_fHigh", ctypes.c_float),       # 最高价
+        ("m_fLow", ctypes.c_float),        # 最低价
+        ("m_fNewPrice", ctypes.c_float),   # 最新价格
+        ("m_fVolume", ctypes.c_float),     # 成交量
+        ("m_fAmount", ctypes.c_float),     # 成交额
+
+        # 分开申买价和申买量
+        ("m_fBuyPrice1", ctypes.c_float),  # 申买价1
+        ("m_fBuyPrice2", ctypes.c_float),  # 申买价2
+        ("m_fBuyPrice3", ctypes.c_float),  # 申买价3
+        ("m_fBuyPrice4", ctypes.c_float),  # 申买价4
+        ("m_fBuyPrice5", ctypes.c_float),  # 申买价5
+
+        ("m_fBuyVolume1", ctypes.c_float), # 申买量1
+        ("m_fBuyVolume2", ctypes.c_float), # 申买量2
+        ("m_fBuyVolume3", ctypes.c_float), # 申买量3
+        ("m_fBuyVolume4", ctypes.c_float), # 申买量4
+        ("m_fBuyVolume5", ctypes.c_float), # 申买量5
+
+        # 分开申卖价和申卖量
+        ("m_fSellPrice1", ctypes.c_float), # 申卖价1
+        ("m_fSellPrice2", ctypes.c_float), # 申卖价2
+        ("m_fSellPrice3", ctypes.c_float), # 申卖价3
+        ("m_fSellPrice4", ctypes.c_float), # 申卖价4
+        ("m_fSellPrice5", ctypes.c_float), # 申卖价5
+
+        ("m_fSellVolume1", ctypes.c_float), # 申卖量1
+        ("m_fSellVolume2", ctypes.c_float), # 申卖量2
+        ("m_fSellVolume3", ctypes.c_float), # 申卖量3
+        ("m_fSellVolume4", ctypes.c_float), # 申卖量4
+        ("m_fSellVolume5", ctypes.c_float), # 申卖量5
+    ]
+
+# 定义 DAT_REPORT 结构体
+class DAT_REPORT(ctypes.Structure):
+    _pack_ = 1  # 内存紧密对齐
+    _fields_ = [
+    ("m_cbSize", ctypes.c_uint16),                # 结构大小 (WORD) 2
+    ("formatted_date", ctypes.c_char * 20),                    # 成交时间 (time_t) 4
+    ("m_wMarket", ctypes.c_uint16),               # 股票市场类型 (WORD) 2
+    ("m_szLabel", ctypes.c_char * STKLABEL_LEN), # 股票代码 10
+    ("m_szName", ctypes.c_char * STKNAME_LEN),   # 股票名称 32 
+    ("m_fLastClose", ctypes.c_float),             # 昨收 4
+    ("m_fOpen", ctypes.c_float),                  # 今开 4
+    ("m_fHigh", ctypes.c_float),                  # 最高 4
+    ("m_fLow", ctypes.c_float),                   # 最低 4
+    ("m_fNewPrice", ctypes.c_float),              # 最新 4 
+    ("m_fVolume", ctypes.c_float),                # 成交量 4
+    ("m_fAmount", ctypes.c_float),                # 成交额 4
+    # 拆分申买价
+    ("m_fBuyPrice1", ctypes.c_float),            # 申买价1
+    ("m_fBuyPrice2", ctypes.c_float),            # 申买价2
+    ("m_fBuyPrice3", ctypes.c_float),            # 申买价3
+    # 拆分申买量
+    ("m_fBuyVolume1", ctypes.c_float),           # 申买量1
+    ("m_fBuyVolume2", ctypes.c_float),           # 申买量2
+    ("m_fBuyVolume3", ctypes.c_float),           # 申买量3
+    # 拆分申卖价
+    ("m_fSellPrice1", ctypes.c_float),           # 申卖价1
+    ("m_fSellPrice2", ctypes.c_float),           # 申卖价2
+    ("m_fSellPrice3", ctypes.c_float),           # 申卖价3
+    # 拆分申卖量
+    ("m_fSellVolume1", ctypes.c_float),          # 申卖量1
+    ("m_fSellVolume2", ctypes.c_float),          # 申卖量2
+    ("m_fSellVolume3", ctypes.c_float),          # 申卖量3
+    ("m_fBuyPrice4", ctypes.c_float),             # 申买价4 4  
+    ("m_fBuyVolume4", ctypes.c_float),            # 申买量4 4
+    ("m_fSellPrice4", ctypes.c_float),            # 申卖价4 4
+    ("m_fSellVolume4", ctypes.c_float),           # 申卖量4 4
+    ("m_fBuyPrice5", ctypes.c_float),             # 申买价5 4
+    ("m_fBuyVolume5", ctypes.c_float),            # 申买量5 4
+    ("m_fSellPrice5", ctypes.c_float),            # 申卖价5 4
+    ("m_fSellVolume5", ctypes.c_float),           # 申卖量5 4
+]
+
+# 定义 DAT_POWER_EX 结构体
+class DAT_POWER_EX(ctypes.Structure):
+    _pack_ = 1  # 内存紧密对齐
+    _fields_ = [
+    ("m_szLabel", ctypes.c_char * STKLABEL_LEN),  # 股票代码
+    ("m_wMarket", ctypes.c_ushort),    # WORD 通常是无符号短整型
+    ("formatted_date", ctypes.c_char * 20), # 日期
+    ("m_fGive", ctypes.c_float),     # 每股送
+    ("m_fPei", ctypes.c_float),      # 每股配
+    ("m_fPeiPrice", ctypes.c_float), # 配股价
+    ("m_fProfit", ctypes.c_float),    # 每股红利
+    ]
+
+class DAT_HLMarketType(ctypes.Structure):
+    _pack_ = 1  # 设置结构体对齐
+    _fields_ = [
+        ("m_wMarket", ctypes.c_ushort),                 # 市场代码 2
+        ("m_Name", ctypes.c_char * MKTNAME_LEN),       # 市场名称 16
+        ("m_lProperty", ctypes.c_ulong),                # 市场属性 4
+        ("m_lDate", ctypes.c_ulong),                    # 数据日期 4
+        ("m_PeriodCount", ctypes.c_ushort),            # 交易时段个数 2
+        ("m_OpenTime", ctypes.c_ushort * 5),           # 开市时间 10
+        ("m_CloseTime", ctypes.c_ushort * 5),          # 收市时间 10
+        ("m_nCount", ctypes.c_ushort),                  # 该市场的证券个数 2
+    ]
+
+class DAT_TABLE_STRUCT(ctypes.Structure):
+    _pack_ = 1  # 设置结构体对齐
+    _fields_ = [
+        ("m_szLabel", ctypes.c_char * STKLABEL_LEN),  # 股票代码,以'\0'结尾,如 "500500"
+        ("m_szName", ctypes.c_char * STKNAME_LEN),    # 股票名称,以'\0'结尾,"上证指数"
+        ("m_cProperty", ctypes.c_ushort),               # 每手股数
+    ]
+class DAT_FINANCEDATA(ctypes.Structure):
+    _pack_ = 1  # 设置结构体对齐
+    _fields_ = [
+        ("m_wMarket", ctypes.c_ushort),                 # 股票市场类型
+        ("N1", ctypes.c_ushort),                        # 保留字段
+        ("m_szLabel", ctypes.c_char * 10),             # 股票代码
+        ("formatted_date", ctypes.c_char * 20),          # 日期
+        ("ZGB", ctypes.c_float),                        # 总股本
+        ("GJG", ctypes.c_float),                        # 国家股
+        ("FQFRG", ctypes.c_float),                      # 发起人法人股
+        ("FRG", ctypes.c_float),                        # 法人股
+        ("BGS", ctypes.c_float),                        # B股
+        ("HGS", ctypes.c_float),                        # H股
+        ("MQLT", ctypes.c_float),                       # 目前流通
+        ("ZGG", ctypes.c_float),                        # 职工股
+        ("A2ZPG", ctypes.c_float),                      # A2转配股
+        ("ZZC", ctypes.c_float),                        # 总资产(千元)
+        ("LDZC", ctypes.c_float),                       # 流动资产
+        ("GDZC", ctypes.c_float),                       # 固定资产
+        ("WXZC", ctypes.c_float),                       # 无形资产
+        ("CQTZ", ctypes.c_float),                       # 长期投资
+        ("LDFZ", ctypes.c_float),                       # 流动负债
+        ("CQFZ", ctypes.c_float),                       # 长期负债
+        ("ZBGJJ", ctypes.c_float),                      # 资本公积金
+        ("MGGJJ", ctypes.c_float),                      # 每股公积金
+        ("GDQY", ctypes.c_float),                       # 股东权益
+        ("ZYSR", ctypes.c_float),                       # 主营收入
+        ("ZYLR", ctypes.c_float),                       # 主营利润
+        ("QTLR", ctypes.c_float),                       # 其他利润
+        ("YYLR", ctypes.c_float),                       # 营业利润
+        ("TZSY", ctypes.c_float),                       # 投资收益
+        ("BTSR", ctypes.c_float),                       # 补贴收入
+        ("YYWSZ", ctypes.c_float),                      # 营业外收支
+        ("SNSYTZ", ctypes.c_float),                     # 上年损益调整
+        ("LRZE", ctypes.c_float),                       # 利润总额
+        ("SHLR", ctypes.c_float),                       # 税后利润
+        ("JLR", ctypes.c_float),                        # 净利润
+        ("WFPLR", ctypes.c_float),                      # 未分配利润
+        ("MGWFP", ctypes.c_float),                      # 每股未分配
+        ("MGSY", ctypes.c_float),                       # 每股收益
+        ("MGJZC", ctypes.c_float),                      # 每股净资产
+        ("TZMGJZC", ctypes.c_float),                    # 调整每股净资产
+        ("GDQYB", ctypes.c_float),                      # 股东权益比
+        ("JZCSYL", ctypes.c_float),                     # 净资收益率
+    ]
+
+class DAT_MINUTE_EX(ctypes.Structure):
+    _pack_ = 1  # 设置结构体对齐
+    _fields_ = [
+        ("m_szLabel", ctypes.c_char * 10),             # 股票代码
+        ("m_wMarket", ctypes.c_ushort),                 # 市场代码
+        ("formatted_date", ctypes.c_char * 20),          # 日期
+        ("m_fPrice", ctypes.c_float),
+        ("m_fVolume", ctypes.c_float),
+        ("m_fAmount", ctypes.c_float),
+    ]
+
+class DAT_5MINUTE_EX(ctypes.Structure):
+    _pack_ = 1  # 设置结构体对齐
+    _fields_ = [
+        ("m_szLabel", ctypes.c_char * 10),             # 股票代码
+        ("m_wMarket", ctypes.c_ushort),                 # 市场代码
+        ("formatted_date", ctypes.c_char * 20),          # 日期
+        ("m_fOpen", ctypes.c_float),       # 开盘
+        ("m_fHigh", ctypes.c_float),       # 最高
+        ("m_fLow", ctypes.c_float),        # 最低
+        ("m_fClose", ctypes.c_float),      # 收盘
+        ("m_fVolume", ctypes.c_float),     # 量
+        ("m_fAmount", ctypes.c_float),     # 额
+        ("m_fActiveBuyVol", ctypes.c_float), # 主动买量
+    ]
+class DAT_DAY_EX(ctypes.Structure):
+    _pack_ = 1  # 设置结构体对齐
+    _fields_ = [
+        ("m_szLabel", ctypes.c_char * 10),             # 股票代码
+        ("m_wMarket", ctypes.c_ushort),                 # 市场代码
+        ("formatted_date", ctypes.c_char * 20),          # 日期
+        ("m_fOpen", ctypes.c_float),
+        ("m_fHigh", ctypes.c_float),
+        ("m_fLow", ctypes.c_float),
+        ("m_fClose", ctypes.c_float),
+        ("m_fVolume", ctypes.c_float),
+        ("m_fAmount", ctypes.c_float),
+        ("m_wAdvance", ctypes.c_ushort),  # WORD 涨数,仅大盘有效
+        ("m_wDecline", ctypes.c_ushort),  # WORD 跌数,仅大盘有效
     ]
