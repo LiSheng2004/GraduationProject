@@ -5,11 +5,11 @@ import os
 from constant import ROOT_PATH
 
 # 创建Logger
-def setup_logger(path):
+def setup_logger(path,logger_name='MyLogger'):
     # 传入的path就是log_filename
     log_filename = path
     # 创建日志器
-    logger = logging.getLogger()
+    logger = logging.getLogger(logger_name)
     logger.setLevel(logging.DEBUG)  # 设置日志级别
 
     # 创建控制台处理器
