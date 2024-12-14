@@ -12,6 +12,6 @@ if %errorLevel% NEQ 0 (
 cd /d "%~dp0"  
 
 :: 执行Python脚本
-python "test.py"
+python "requests.py"
 
 pause
