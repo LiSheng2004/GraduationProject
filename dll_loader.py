@@ -16,6 +16,8 @@ from generate_func import *
 import threading
 from extended_api import init_dll_functions
 from ctypes import wintypes
+import requests
+import json
 
 def get_dll_path_from_registry():
     # 打开注册表项
@@ -580,7 +582,7 @@ def execute_daily_task(dll):
         formatted_time = f"{date_str} {time_str}-{time_milli_str}"
 
         # 判断是否到达5点
-        if china_time.hour == 10 and china_time.minute == 26 and not done:
+        if china_time.hour == 17 and china_time.minute == 0 and  not done:
             logger.info(f"{formatted_time} 时间到了，执行定时操作")
             # 执行您需要的定时操作，使用 dll 参数
             # 在这里执行与 DLL 相关的操作
@@ -589,12 +591,41 @@ def execute_daily_task(dll):
             result = dll.AskStockPRP(pBuf)
             done = True
         # 每天凌晨将done变量重置为False
-        if china_time.hour == 0 and china_time.minute == 0 and china_time.second == 0:
-            done = False
+        if china_time.hour == 0 and china_time.minute == 0:
+            _, last_day = get_last_two_klines_time()
+            if last_day.date() == china_time.date():
+                done = False
         # 每分钟检查一次
         time.sleep(40)
 
+def get_last_two_klines_time():
+    """
+    获取东财网站当前最后两条k线的时间
 
+    :return: datetime 倒数第2条时间,倒数第1条时间
+    """
+    proxies = {
+        'http': None,
+        'https': None
+    }
+    headers = {
+        'User-Agent': 'Mozilla / 5.0(WindowsNT10.0;Win64;x64) AppleWebKit / 537.36(KHTML, likeGecko) '
+                      'Chrome / 94.0.4606.81Safari / 537.36Edg / 94.0.992.50'}
+    params = {
+        'secid': '1.000001',
+        'fields1': "f1,f2,f3,f4,f5,f6",
+        'fields2': "f51",
+        'klt': 101,
+        'fqt': 1,
+        'end': 20500101,
+        'lmt': 2
+    }
+    response = requests.get('https://push2his.eastmoney.com/api/qt/stock/kline/get', headers=headers, params=params, proxies=proxies)
+    data = json.loads(response.text)
+    date1 = datetime.datetime.strptime(data["data"]["klines"][0], "%Y-%m-%d")
+    date2 = datetime.datetime.strptime(data["data"]["klines"][1], "%Y-%m-%d")
+
+    return date1, date2
 # 加载成功后启动消息循环
 def run_message_loop():
     if initialize_dll(): # 初始化dll

@@ -2,8 +2,8 @@ import win32con
 import ctypes
 
 # 根文件夹路径
-# ROOT_PATH = r"\\10.68.1.151\tj07166_001\Etornado-data"
-ROOT_PATH = './data'
+ROOT_PATH = r"\\10.68.1.151\tj07166_001\Etornado-data"
+# ROOT_PATH = './data'
 
 # 各个csv文件表头
 csv_RCV_REPORT = ["结构大小", "成交时间", "股票市场类型", "股票代码", "股票名称", "昨收", "今开", "最高", "最低", "最新", 
