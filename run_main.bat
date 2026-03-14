@@ -11,6 +11,6 @@ if %errorLevel% NEQ 0 (
 :: 切换到目标目录
 cd /d "%~dp0"  
 :: 执行Python脚本
-python "main.py"
+"E:\conda\envs\stock_x64\python.exe" "main.py"
 
 pause
